@@ -1,7 +1,7 @@
 FROM node:12
 
 # Create app directory
-WORKDIR F:\projects\Web\Telegraf\nice-bot
+# WORKDIR F:\projects\Web\Telegraf\nice-bot
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -15,5 +15,5 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-EXPOSE 8080
+# EXPOSE 8080
 CMD node index.js -p 8080

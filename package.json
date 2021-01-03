@@ -1,0 +1,18 @@
+{
+  "name": "nice-bot",
+  "version": "1.0.0",
+  "description": "the first bot on 'Telegraf'",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Efi",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "telegraf": "^3.38.0"
+  }
+}

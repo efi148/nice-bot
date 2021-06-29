@@ -2,7 +2,7 @@ const { Telegraf } = require("telegraf");
 const Markup = require("telegraf/markup");
 
 const BOT_TOKEN =
-  process.env.BOT_TOKEN || "1492189543:AAH-rkODUKiy017M6yKVpyqsqliRMvczgV8";
+  process.env.BOT_TOKEN;
 
 const bot = new Telegraf(BOT_TOKEN);
 

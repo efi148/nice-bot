@@ -17,6 +17,7 @@
     "lodash": "^4.17.21",
     "most-common-words-by-language": "^3.0.9",
     "node-fetch": "^3.2.3",
+    "rxjs": "^7.5.5",
     "telegraf": "^3.38.0"
   }
 }

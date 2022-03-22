@@ -1,9 +1,13 @@
 import {getWordsList} from 'most-common-words-by-language';
+import {Observable, Subject} from 'rxjs';
 import fetch from 'node-fetch';
 
 const lang = 'hebrew';
+export const logging$ = new Subject();
+
 export async function getAllWords(wordsNum = 10000, sLimit = 100) {
     function progress(total, current) {
+        logging$.next(`The word ${current}/${total} is being tested now.`)
         return `The word ${current}/${total} is being tested now.`;
     }
 
@@ -29,9 +33,5 @@ export async function getAllWords(wordsNum = 10000, sLimit = 100) {
 
 export async function checkWord(wordToCheck) {
     let result = await fetch(`https://semantle-he.herokuapp.com/api/distance?word=${wordToCheck}`).then(res => res.json());
-    return { word: wordToCheck, similarity: result.similarity };
+    return {word: wordToCheck, similarity: result.similarity};
 }
-
-// getAllWords().then(result => {
-//     console.log(result);
-// });

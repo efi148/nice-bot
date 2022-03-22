@@ -9,9 +9,12 @@ const wordsNum = 30;
 const simLimit = 35;
 bot.start((ctx) => {
     ctx.reply(
-        `Hello ${ctx.from.first_name}`,
+        `Hello ${ctx.from.first_name}!
+        
+Click on the buttun below to test ${wordsNum} words
+but only words that more then ${simLimit} similarity.`,
         Markup.inlineKeyboard([
-            Markup.callbackButton(`semantle: ${wordsNum} words test`, "semantle"),
+            Markup.callbackButton(`semantle`, "semantle"),
         ]).extra()
     );
 });

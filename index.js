@@ -1,31 +1,32 @@
-const { Telegraf } = require("telegraf");
-const Markup = require("telegraf/markup");
+import Telegraf from "telegraf";
+import Markup from "telegraf/markup.js"
+import {getAllWords} from "./semantle.js";
 
-const BOT_TOKEN =
-  process.env.BOT_TOKEN;
+const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const bot = new Telegraf(BOT_TOKEN);
-
+const wordsNum = 30;
+const simLimit = 35;
 bot.start((ctx) => {
-  ctx.reply(
-    `Hello ${ctx.from.first_name}`,
-    Markup.inlineKeyboard([
-      Markup.callbackButton("click here", "CLICK_HERE"),
-      Markup.urlButton("my Channel", "https://t.me/ironyman2"),
-    ]).extra()
-  );
+    ctx.reply(
+        `Hello ${ctx.from.first_name}`,
+        Markup.inlineKeyboard([
+            Markup.callbackButton(`semantle: ${wordsNum} words test`, "semantle"),
+        ]).extra()
+    );
 });
 
-bot.action("CLICK_HERE", ({ editMessageText }) =>
-  editMessageText("You did it!")
-);
-
-bot.on("text", (ctx) => {
-  return ctx.reply(`Hello ${ctx.from.first_name}`);
-});
-
+bot.action("semantle", async ({editMessageText}) => {
+    let allWords = await getAllWords(wordsNum, simLimit).then(result => {
+        let text = '';
+        result.forEach(d => {
+            text = text.concat(`${d.word}: ${d.similarity}\n`)
+        })
+        return text;
+    });
+    return editMessageText(allWords);
+})
 bot.launch();
-// bot.startPolling();
 
 console.log("Starting App...");
 const PORT = process.env.PORT || 5000;

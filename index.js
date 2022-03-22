@@ -5,7 +5,7 @@ import {getAllWords} from "./semantle.js";
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const bot = new Telegraf(BOT_TOKEN);
-const wordsNum = 30;
+const wordsNum = 50;
 const simLimit = 35;
 
 bot.start((ctx) => {

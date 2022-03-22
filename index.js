@@ -1,13 +1,12 @@
 import Telegraf from "telegraf";
-import Markup from "telegraf/markup.js"
-import fetch from "node-fetch";
 import {getAllWords, logging$} from "./semantle.js";
+import {initServer} from "./server.js";
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const bot = new Telegraf(BOT_TOKEN);
 const wordsNum = 60;
-const simLimit = 40;
+const simLimit = 30;
 
 bot.start((ctx) => {
     ctx.reply(
@@ -55,7 +54,7 @@ bot.command("/check_today_words_list", async (ctx) => {
 })
 
 bot.launch();
-
+initServer();
 console.log("Starting App...");
 const PORT = process.env.PORT || 5000;
 console.log("PORT: " + PORT);

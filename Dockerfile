@@ -1,7 +1,6 @@
 FROM node:12
 
 # Create app directory
-# WORKDIR F:\projects\Web\Telegraf\nice-bot
 WORKDIR /app
 
 # Install app dependencies

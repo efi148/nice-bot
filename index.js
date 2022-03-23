@@ -1,6 +1,7 @@
 import Telegraf from "telegraf";
 import {getAllWords, logging$} from "./semantle.js";
 import {initServer} from "./server.js";
+import express from "express";
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
@@ -54,7 +55,16 @@ bot.command("/check_today_words_list", async (ctx) => {
 })
 
 bot.launch();
-initServer();
+// initServer();
+const PORT = process.env.PORT || 8080;
+const HOST = '0.0.0.0';
+const app = express();
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
+
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);
 console.log("Starting App...");
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 console.log("PORT: " + PORT);

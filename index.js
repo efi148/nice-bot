@@ -1,13 +1,12 @@
 import Telegraf from "telegraf";
 import {getAllWords, logging$} from "./semantle.js";
-import {initServer} from "./server.js";
 import express from "express";
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const bot = new Telegraf(BOT_TOKEN);
-const wordsNum = 60;
-const simLimit = 30;
+const wordsNum = process.env.COUNT_WORDS || 1000;
+const simLimit = 40;
 
 bot.start((ctx) => {
     ctx.reply(
@@ -54,8 +53,11 @@ bot.command("/check_today_words_list", async (ctx) => {
     subscription.unsubscribe();
 })
 
+bot.command("b", (ctx) => {
+    ctx.reply("how many?")
+});
+
 bot.launch();
-// initServer();
 
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0';

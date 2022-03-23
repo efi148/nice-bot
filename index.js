@@ -56,6 +56,7 @@ bot.command("/check_today_words_list", async (ctx) => {
 
 bot.launch();
 // initServer();
+
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0';
 const app = express();

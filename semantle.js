@@ -7,7 +7,7 @@ export const logging$ = new Subject();
 
 export async function getAllWords(wordsNum = 10000, sLimit = 100) {
     function progress(total, current) {
-        logging$.next(`The word ${current}/${total} is being tested now.`)
+        // logging$.next(`The word ${current}/${total} is being tested now.`)
         return `The word ${current}/${total} is being tested now.`;
     }
 

@@ -39,10 +39,12 @@ bot.action("semantle", async ({editMessageText}) => {
 })
 
 bot.command("/check_today_words_list", async (ctx) => {
+    logging$.next(`chacking ${wordsNum} words`)
     const subscription = logging$.subscribe(x => {
         ctx.reply(x);
     });
     let allWords = await getAllWords(wordsNum, simLimit).then(result => {
+        if (result.length == 0) return 'not found word with this settings';
         let text = '';
         result.forEach(d => {
             text = text.concat(`${d.word}: ${d.similarity}\n`)

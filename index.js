@@ -1,12 +1,19 @@
 import Telegraf from "telegraf";
 import {getAllWords, logging$} from "./semantle.js";
 import express from "express";
+// import {ReplyManager} from "node-telegram-operation-manager";
+import Markup from "telegraf/markup.js";
+import path from 'path';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const bot = new Telegraf(BOT_TOKEN);
 const wordsNum = process.env.COUNT_WORDS || 1000;
 const simLimit = 40;
+// const reply = new ReplyManager();
 
 bot.start((ctx) => {
     ctx.reply(
@@ -64,12 +71,12 @@ bot.launch();
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0';
 const app = express();
+
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.sendFile(path.join(__dirname, '/index.html'));
 });
 
 app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
 console.log("Starting App...");
-// const PORT = process.env.PORT || 5000;
+// console.log(`Running on http://${HOST}:${PORT}`);
 console.log("PORT: " + PORT);

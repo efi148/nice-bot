@@ -1,5 +1,5 @@
 import {getWordsList} from 'most-common-words-by-language';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import fetch from 'node-fetch';
 
 const lang = 'hebrew';
@@ -7,8 +7,16 @@ export const logging$ = new Subject();
 
 export async function getAllWords(wordsNum = 10000, sLimit = 100) {
     function progress(total, current) {
-        // logging$.next(`The word ${current}/${total} is being tested now.`)
-        return `The word ${current}/${total} is being tested now.`;
+        const section = total / 10;
+        if (current == 1) logging$.next('[__________]');
+        if (current % section == 0) {
+            const progress = current / section;
+            const empty = '_';
+            const full = '*';
+            const progressBar = `${current}/${total}\n[${full.repeat(progress)}${empty.repeat(10 - progress)}]`;
+            logging$.next(progressBar);
+        }
+        // if (current % 10 == 0) logging$.next(`The word ${current}/${total} is being tested now.`);
     }
 
     function filter(array, similarityLimit, countLimit) {
@@ -24,7 +32,7 @@ export async function getAllWords(wordsNum = 10000, sLimit = 100) {
     const wordsList = getWordsList(lang, wordsNum);
     let resultList = [];
     for (const word of wordsList) {
-        console.log(progress(wordsNum, count++));
+        progress(wordsNum, count++);
         resultList.push(await checkWord(word));
     }
 

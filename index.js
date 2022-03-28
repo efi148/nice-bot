@@ -12,7 +12,8 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const bot = new Telegraf(BOT_TOKEN);
 const wordsNum = process.env.COUNT_WORDS || 1000;
-const simLimit = 40;
+const simMinLimit = 40;
+const simMaxLimit = 70;
 // const reply = new ReplyManager();
 
 bot.start((ctx) => {
@@ -20,10 +21,10 @@ bot.start((ctx) => {
         `Hello ${ctx.from.first_name}!
         
 Click on the buttun below to test ${wordsNum} words
-but only words that more then ${simLimit} similarity.`,
-        // Markup.inlineKeyboard([
-        //     Markup.callbackButton(`semantle`, "semantle"),
-        // ]).extra()
+but only words that more then ${simMinLimit} similarity and less then ${simMaxLimit}.`,
+        Markup.inlineKeyboard([
+            Markup.callbackButton(`semantle`, "semantle"),
+        ]).extra()
     );
 });
 
@@ -46,17 +47,17 @@ bot.action("semantle", async ({editMessageText}) => {
 })
 
 bot.command("/check_today_words_list", async (ctx) => {
-    logging$.next(`chacking ${wordsNum} words`)
     const subscription = logging$.subscribe(x => {
         ctx.reply(x);
     });
-    let allWords = await getAllWords(wordsNum, simLimit).then(result => {
+    logging$.next(`chacking ${wordsNum} words`);
+    let allWords = await getAllWords(wordsNum, simMinLimit, simMaxLimit).then(result => {
         if (result.length == 0) return 'not found word with this settings';
         let text = '';
         result.forEach(d => {
             text = text.concat(`${d.word}: ${d.similarity}\n`)
         })
-        return text;
+        return `Found ${result.length} words:\n\n` + text;
     });
     logging$.next(allWords);
     subscription.unsubscribe();

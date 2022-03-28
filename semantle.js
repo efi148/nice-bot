@@ -5,10 +5,9 @@ import fetch from 'node-fetch';
 const lang = 'hebrew';
 export const logging$ = new Subject();
 
-export async function getAllWords(wordsNum = 10000, sLimit = 100) {
+export async function getAllWords(wordsNum = 10000, sMinLimit = 40, sMaxLimit = 70) {
     function progress(total, current) {
         const section = total / 10;
-        if (current == 1) logging$.next('[__________]');
         if (current % section == 0) {
             const progress = current / section;
             const empty = '_';
@@ -19,9 +18,9 @@ export async function getAllWords(wordsNum = 10000, sLimit = 100) {
         // if (current % 10 == 0) logging$.next(`The word ${current}/${total} is being tested now.`);
     }
 
-    function filter(array, similarityLimit, countLimit) {
+    function filter(array, similarityMinLimit, similarityMaxLimit, countLimit) {
         let newArr = array.sort((a, b) => b.similarity - a.similarity);
-        newArr = newArr.filter(e => e.similarity > similarityLimit);
+        newArr = newArr.filter(e => e.similarity > similarityMinLimit && e.similarity < similarityMaxLimit);
         if (typeof countLimit !== 'undefined') {
             newArr = newArr.filter((e, i) => i < countLimit);
         }
@@ -36,7 +35,7 @@ export async function getAllWords(wordsNum = 10000, sLimit = 100) {
         resultList.push(await checkWord(word));
     }
 
-    return filter(resultList, sLimit);
+    return filter(resultList, sMinLimit, sMaxLimit);
 }
 
 export async function checkWord(wordToCheck) {

@@ -20,7 +20,9 @@ export async function getAllWords(wordsNum = 10000, sMinLimit = 40, sMaxLimit = 
 
     function filter(array, similarityMinLimit, similarityMaxLimit, countLimit) {
         let newArr = array.sort((a, b) => b.similarity - a.similarity);
-        newArr = newArr.filter(e => e.similarity > similarityMinLimit && e.similarity < similarityMaxLimit);
+        newArr = newArr.filter(e => e.similarity > similarityMinLimit &&
+                                    e.similarity < similarityMaxLimit &&
+                                    e.similarity != null);
         if (typeof countLimit !== 'undefined') {
             newArr = newArr.filter((e, i) => i < countLimit);
         }
@@ -31,7 +33,7 @@ export async function getAllWords(wordsNum = 10000, sMinLimit = 40, sMaxLimit = 
     const wordsList = getWordsList(lang, wordsNum);
     let resultList = [];
     for (const word of wordsList) {
-        progress(wordsNum, count++);
+        await progress(wordsNum, count++);
         resultList.push(await checkWord(word));
     }
 
@@ -40,5 +42,5 @@ export async function getAllWords(wordsNum = 10000, sMinLimit = 40, sMaxLimit = 
 
 export async function checkWord(wordToCheck) {
     let result = await fetch(`https://semantle-he.herokuapp.com/api/distance?word=${wordToCheck}`).then(res => res.json());
-    return {word: wordToCheck, similarity: result.similarity};
+    return {word: wordToCheck, similarity: result.similarity, distance: result.distance};
 }

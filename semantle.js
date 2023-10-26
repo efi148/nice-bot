@@ -41,6 +41,6 @@ export async function getAllWords(wordsNum = 10000, sMinLimit = 40, sMaxLimit = 
 }
 
 export async function checkWord(wordToCheck) {
-    let result = await fetch(`https://semantle-he.herokuapp.com/api/distance?word=${wordToCheck}`).then(res => res.json());
+    let result = await fetch(`https://semantle.ishefi.com/api/distance?word=${wordToCheck}`).then(res => res.json());
     return {word: wordToCheck, similarity: result.similarity, distance: result.distance};
 }

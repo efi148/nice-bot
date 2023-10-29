@@ -2,27 +2,27 @@ import Telegraf from "telegraf";
 import session from "telegraf/session.js"
 import Stage from "telegraf/stage.js";
 import WizardScene from "telegraf/scenes/wizard/index.js"
-import {getAllWords, logging$} from "./semantle.js";
+import { getAllWords, logging$ } from "./semantle.js";
 import express from "express";
 import Markup from "telegraf/markup.js";
-import path, {dirname} from 'path';
-import {fileURLToPath} from 'url';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 // import {ReplyManager} from "node-telegram-operation-manager";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
 let wordListConfig = {
-    wordsNum: process.env.COUNT_WORDS || 1000,
-    simMinLimit: 40,
-    simMaxLimit: 60,
-    isDistanceShown: false
+    wordsNum: process.env.COUNT_WORDS || 100,
+    simMinLimit: 10,
+    simMaxLimit: 90,
+    isDistanceShown: true
 }
 
 const semantleWizard = new WizardScene(
     'semantle-wizard',
     ctx => {
-        ctx.wizard.state.data = {...wordListConfig};
+        ctx.wizard.state.data = { ...wordListConfig };
         ctx.reply(`How many words do you want to check?
 (1-10000,)
 [defauld ${wordListConfig.wordsNum}, recommended 1500]`);
@@ -75,8 +75,6 @@ maximum similarity: ${userConfig.simMaxLimit}
 range: ${userConfig.simMaxLimit - userConfig.simMinLimit}
 show distance? ${userConfig.isDistanceShown ? 'Yes' : 'No'}
 `);
-
-        //
         const subscription = logging$.subscribe(x => {
             ctx.reply(x);
         });
@@ -106,7 +104,6 @@ show distance? ${userConfig.isDistanceShown ? 'Yes' : 'No'}
         });
         logging$.next(allWords);
         await subscription.unsubscribe();
-        //
         return ctx.scene.leave();
     }
 );
@@ -131,7 +128,7 @@ but only words that more then ${wordListConfig.simMinLimit} similarity and less 
     );
 });
 
-bot.action("semantle", async ({editMessageText}) => {
+bot.action("semantle", async ({ editMessageText }) => {
     // let chatId = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`).then(res => res.json())
     //     .then(res => res.result[0].callback_query.message.chat.id);
     // logging$.subscribe(async x => {
@@ -161,6 +158,8 @@ bot.command("/check_today_words_list", async (ctx) => {
             text = text.concat(`${d.word}: ${d.similarity}\n`)
         })
         return `Found ${result.length} words:\n\n` + text;
+    }).catch(err => {
+        console.log(err);
     });
     await logging$.next(allWords);
     await subscription.unsubscribe();

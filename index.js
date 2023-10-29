@@ -10,8 +10,7 @@ import { fileURLToPath } from 'url';
 // import {ReplyManager} from "node-telegram-operation-manager";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const BOT_TOKEN = process.env.BOT_TOKEN;
-
+const BOT_TOKEN = process.env.BOT_TOKEN || '1492189543:AAGfFDoHJxh5oDVRaZXzo2OTDE2bbFcmQ0U';
 
 let wordListConfig = {
     wordsNum: process.env.COUNT_WORDS || 100,
@@ -175,9 +174,14 @@ bot.launch();
 const PORT = process.env.PORT || 8080;
 const HOST = '0.0.0.0';
 const app = express();
+app.use(express.json());
+app.use(bot.webhookCallback(bot, "express"));
+app.listen(PORT, () => {
+    console.log(`Bot listening on port ${PORT}`);
+});
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/index.html'));
+    res.send(`<p>visit the bot on: <a href="https://t.me/myNiceBotVer1_bot">@myNiceBotVer1_bot</a></p>`);
 });
 
 app.listen(PORT, HOST);

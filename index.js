@@ -12,6 +12,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
+
 let wordListConfig = {
     wordsNum: process.env.COUNT_WORDS || 100,
     simMinLimit: 10,

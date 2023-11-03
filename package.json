@@ -2,11 +2,12 @@
   "name": "nice-bot",
   "version": "1.0.0",
   "description": "the first bot on 'Telegraf'",
-  "main": "index.js",
+"main": "index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "ruv-dev-server": "ngrok http 3000"
   },
   "author": "Efi",
   "license": "ISC",
@@ -17,7 +18,11 @@
     "lodash": "^4.17.21",
     "most-common-words-by-language": "^3.0.9",
     "node-fetch": "^3.2.3",
+    "node-telegram-bot-api": "^0.64.0",
     "rxjs": "^7.5.5",
     "telegraf": "^3.38.0"
+  },
+  "devDependencies": {
+    "ngrok": "^5.0.0-beta.2"
   }
 }
